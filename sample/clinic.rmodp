@@ -1,0 +1,676 @@
+////////////////////////////////////////////////////////////////////////////////////////////
+// sample clinic specification version : v0.7
+// author : AT
+// revision date: May, 2012
+////////////////////////////////////////////////////////////////////////////////////////////
+
+// Enterprise Specification
+package DataTypes {
+	// Types and enumerations
+	type String
+	type Boolean
+	type Integer
+	type Date
+	type Time
+	type Address
+	type Identifier
+	
+	enum ReservationStatus {
+		"ReservationRequested"
+		"Reserved"
+		"Cancelled"
+		"Completed"
+	}
+	
+	enum Direction {
+		"North"
+		"South"
+		"East"
+		"West"
+	}
+}
+
+
+package myEnterprise {
+	import DataTypes.*
+	enterprise Clinic_EV {
+	// Field of application
+		EV_FieldOfApplication "To clarify the context in which appointment reservation is executed"
+	// Global Objects (Business Objects)
+		EV_Object AppointmentManagementCommunityObject {
+		} 
+		EV_Object TreatmentCommunityObject {
+		}
+		EV_Object AccountingCommunityObject {
+		}
+		EV_Object ClinicODPSystem {
+		}
+		EV_Object Person {
+			property name : String
+		}
+	// Community Specification
+		EV_CommunityContract ClinicServiceContract {
+	// Community's objective (decomposable)
+			EV_Objective clinic_objective "Provide fair and timely treatment to all the patient" {
+				EV_Objective objective_of_this_year "Make it convenient for patients to visit the clinic"
+			}
+	// Community specification	
+			EV_Community AppointmentManagement {
+	// Local (to the community) Enterprise Objects with State Machines
+				EV_Object Appointment {
+					{	
+					events
+						Requested
+						NotTaken
+						AlreadyTaken
+						ModificationRequested
+						ModificationPossible
+						CancelRequested
+						CancelConfirmed
+						AppointmentCompleted
+					end
+					commands
+						Create
+						Modify
+						Cancel
+						Complete
+						Check
+					end
+					state initialState
+						actions {Create}
+						Requested => UnderChecking
+					end
+					state UnderChecking
+						NotTaken => Reserved
+						AlreadyTaken => initialState
+						ModificationPossible => Reserved
+					end
+					state Reserved
+						actions {Modify Cancel Complete Check}
+						ModificationRequested => UnderChecking
+						CancelRequested => Cancelling
+						AppointmentCompleted => endState
+						AlreadyTaken => Reserved
+						NotTaken => Reserved
+					end
+					state Cancelling
+						actions {Cancel}
+						CancelConfirmed => endState
+					end
+					state endState
+					end
+					}
+				}
+				EV_Object IntroducedAppointment extends Appointment {
+					property IntroducerID : String
+				}
+	// Roles in the community
+				EV_Role ExaminationAssistant
+				EV_Role Receptionist
+				EV_Role Patient
+				EV_Role AppointmentReservationSystem
+				EV_Role Doctor
+	// Start of "AppointmentReservationAbstract" Process Definition
+				EV_Process AppointmentReservation {
+	// Behaviour: each lane of activity diagram representing Process is specified in sequence
+	// Behaviour (Decision/Action/Subprocess/Artefacts) of Patient
+					EV_Role Patient {
+						start StartAppointReservation {
+							outgoing AppointmentRequestForm
+						}
+						EV_Artefact AppointmentRequestForm {
+							incoming StartAppointReservation
+							outgoing ShowReservations
+						}
+						EV_Step ProvidePrintedReservationConfirmation {
+							incoming 
+							outgoing EndAppointmentReservation
+						}
+						EV_Step ProvidePrintedReservationRejection {
+							incoming 
+							outgoing RepeatOrStop
+						}
+						decision RepeatOrStop {
+							incoming ProvidePrintedReservationRejection
+							outgoing EndAppointmentReservation
+							outgoing StartAppointReservation
+						}
+						end EndAppointmentReservation {
+							incoming ProvidePrintedReservationConfirmation
+							incoming RepeatOrStop
+						}
+					}
+					
+	// Behaviour (Decision/Action/Subprocess/Artefacts) of Receptionist
+					EV_Role Receptionist {
+						EV_Step ShowReservations {
+							incoming AppointmentRequestForm
+							outgoing RetrieveReservations
+						}
+						EV_Step ConfirmAppointmentRequest {
+							incoming RegisterdReservations
+							outgoing ReservationPossible
+						}
+						decision ReservationPossible {
+							incoming ConfirmAppointmentRequest
+							outgoing MakeReservation "yes"
+							outgoing StartAppointReservation "no"
+						}
+						EV_Step MakeReservation {
+							incoming ReservationPossible 
+							outgoing ProcessReservations
+						}
+						EV_Step PrintReservation {
+							incoming Reservation
+							outgoing ProvidePrintedReservationConfirmation
+						}
+						EV_Step PrintResevationRejection {
+							incoming 
+							outgoing ProvidePrintedReservationRejection
+						}
+					}
+					
+	// Behaviour (Decision/Action/Subprocess/Artefacts) of AppointmentReservationSystem
+					EV_Role AppointmentReservationSystem {
+						EV_Step RetrieveReservations {
+							incoming ShowReservations
+							outgoing RegisterdReservations
+						}
+						EV_Artefact RegisterdReservations {
+							incoming RetrieveReservations
+							outgoing ConfirmAppointmentRequest
+						}
+						EV_Step ProcessReservations {
+							incoming MakeReservation
+							outgoing ReservationResult
+						}
+						decision ReservationResult {
+							incoming ProcessReservations
+							outgoing Reservation "successful"
+							outgoing PrintResevationRejection "unsuccessful"
+						}
+						EV_Artefact Reservation {
+							incoming ReservationResult
+							outgoing PrintReservation
+						}
+					}
+					
+				}
+	// End of AppointmentReservation Process Definition
+	
+	// Start of  community process (place holder)
+				EV_Process communityProcess {}
+				
+	// End of  community process (place holder)
+
+	// Start of interaction between patient and receptionist
+				EV_Interaction Patient_Receptionist {
+					Process AppointmentReservation
+					EV_InteractionInitiator Patient {
+						events
+							inquired
+							OK
+							NG
+							requested
+						end
+						commands
+							get_result
+							inquire_reservation
+							make_reservation
+						end
+						state initial
+							actions {inquire_reservation}
+							inquired => inquiry_checked  
+						end
+						state inquiry_checked
+							actions {get_result}
+							OK => appointment_possible
+							NG => initial
+						end
+						state appointment_possible
+							actions {make_reservation}
+							requested => appointment_reserved
+						end
+						state appointment_reserved
+						end
+					}
+					EV_InteractionResponder Receptionist {
+						events
+							appointment_inquired
+							result_passed
+							OK
+							NG
+							reserved
+						end
+						commands
+							process_inquiry
+							give_result
+							wait_action
+							make_reservation
+						end
+						state initial
+							actions {process_inquiry}
+							appointment_inquired => inquired
+						end
+						state inquired
+							actions {give_result}
+							result_passed => result_given
+						end
+						state result_given
+							actions {wait_action}
+							OK => appointment_requested
+							NG => initial
+						end
+						state appointment_requested
+							actions {make_reservation}
+							reserved => appointment_reserved
+						end
+						state appointment_reserved
+						end
+					}
+					EV_Artefact appointment_inquiry from Patient to Receptionist
+					EV_Artefact appointment_inquiry_result from Receptionist to Patient
+					EV_Artefact appointment_request from Patient to Receptionist
+					EV_Artefact appointment_confirmation from Receptionist to Patient
+				}
+	// End of interaction between patient and receptionist
+	
+	// Policy statements
+				EV_PolicyEnvelop AppointmentReservationPolicy {
+					EV_PolicyValue "Appointment reservation policy for normal season" {
+						obligation NormalSeasonReservationObligation : current 
+							EV_Role Patient is obligated to "make an appointment to a receptionist"
+						obligation HolidaySeasonReservationObligation : 
+							EV_Role Patient is obligated to "make an appointment to a receptionist or to a doctor"
+					}
+					EV_ControllingBehavior { 
+						AppointmentReservation 
+					}
+					EV_AffectedBehavior {
+						EV_Role Patient
+						EV_Role AppointmentReservationSystem
+						EV_Role Receptionist
+						EV_Role Doctor
+						EV_Process AppointmentReservation
+					}
+				}
+			}
+		}
+	}
+}
+
+// Information Specification
+package myInformation {
+	import DataTypes.*
+	information Clinic_IV {
+		invariant schema AppointmentManagementInvariantSchema {
+			IV_Object Party {
+				property name : String
+				property address : String
+				property phone : String
+			}
+			IV_Object Receptionist extends Party {
+				property staffID : String
+				property onDuty : Boolean
+			}
+			IV_Object Patient extends Party {
+				property PatientID : String
+				property Reservations : Reservation[]
+			}
+			IV_Object Doctor extends Party {
+				property onDuty : Boolean
+			}
+			IV_Object Clinic extends Party {
+				property clinicID : String
+			}
+			IV_Object Calendar {
+				property today : Date
+			}
+			IV_Object Reservation {
+				property reservationID : String
+				property reservationStatus : ReservationStatus
+				property date : Date
+				property patient : Patient
+			}
+			action type ReserveRequest { 
+				action property requestor : Party
+				action property receptionist : Receptionist
+			}
+			action type ChangeReservationRequest {
+				action property requestor :Party
+				action property receptionist : Receptionist
+				action property newReservation : Reservation
+			}
+			action type CancelReservationRequest {
+				action property requestor :Party
+				action property receptionist : Receptionist
+				action property canceledReservation : Reservation
+			}
+		}
+		dynamic schema ReservationDynamicSchema {
+			events
+				ReservationRequested
+				ChangeReservationRequested
+				CancelReservationRequested
+				Reservable
+				Unreservable
+				Reserved
+				CancelConfirmed
+				ChangeConfirmed
+			end
+			commands
+				CheckStatus
+			end
+			state initial
+				actions {CheckStatus}
+				ReservationRequested => requested
+			end
+			state requested
+				actions {CheckStatus}
+				Reservable => reserved
+				Unreservable => initial
+			end
+			state reserved
+				actions {CheckStatus}
+				CancelReservationRequested => changing
+				CancelReservationRequested => canceling
+			end
+			state changing
+				actions {CheckStatus}
+				ChangeConfirmed => reserved
+			end
+			state canceling
+				actions {CheckStatus}
+				CancelConfirmed => initial
+			end
+		}
+		static schema ReservationStaticSchema {
+			locationInTime : "2011-08-29, 9:00"
+			instance AppointmentManagementInvariantSchema.Reservation ReservationInstance01 {
+				AppointmentManagementInvariantSchema.Reservation.reservationID : "01234567"
+				AppointmentManagementInvariantSchema.Reservation.reservationStatus : "ReservationRequested"
+				AppointmentManagementInvariantSchema.Reservation.date : "20110829"
+				AppointmentManagementInvariantSchema.Reservation.patient : "handset#001-#099"
+			}
+			instance AppointmentManagementInvariantSchema.Patient PatientInstance01 {
+				AppointmentManagementInvariantSchema.Patient.PatientID : "01-1357"
+				AppointmentManagementInvariantSchema.Reservation.reservationID : "01234567"
+			}
+			instance AppointmentManagementInvariantSchema.Receptionist Receptionist01 {
+				AppointmentManagementInvariantSchema.Party.name : "Ms. White"
+				AppointmentManagementInvariantSchema.Party.address : "Yokohama, Japan"
+				AppointmentManagementInvariantSchema.Party.phone : "0001112222"
+				AppointmentManagementInvariantSchema.Receptionist.staffID : "R003"
+				AppointmentManagementInvariantSchema.Receptionist.onDuty : "on"
+			}
+			instance AppointmentManagementInvariantSchema.Doctor Doctor01 {
+				AppointmentManagementInvariantSchema.Party.name : "Dr. K"
+				AppointmentManagementInvariantSchema.Party.address : "Tokyo, Japan"
+				AppointmentManagementInvariantSchema.Party.phone : "1112223333"
+				AppointmentManagementInvariantSchema.Receptionist.onDuty : "on"
+			}
+			instance AppointmentManagementInvariantSchema.Calendar Calendar01 {
+				AppointmentManagementInvariantSchema.Calendar.today : "2011-08-29"
+			}
+		}
+	}
+}
+
+// Computational DataTypes
+package myCVDataTypes {	
+	import DataTypes.*
+	// Data Types //
+	type Address {
+	}
+	type Id {
+	}
+	type ClinicId extends Id {
+	}
+	type PatientId extends Id {
+	}
+	type StaffId extends Id {
+	}
+	type ReservationId extends Id {
+	}
+	type AppointmentReservationRequest {
+		property patient : PatientId
+		property requestDate : Date
+		property requestTime : Time
+		property status : ReservationStatus
+	}		
+	type Receptionist {
+		property id : StaffId
+		property name : String
+		property worksFor : ClinicId
+		property email : String
+		property phone : String
+		property username : String
+		property password : String
+	}
+	type Clinic {
+		property id : ClinicId
+		property name : String
+		property address : Address
+		property phone : String
+		property contact : String
+	}
+}
+
+// Computational Specification
+package myComputational {
+	import DataTypes.*
+	import CVDataTypes.*
+	computational Clinic_CV {
+	// Signature Defs
+		CV_OperationInterfaceSignature IReceptionistUI {
+			parameter in UserID : String
+			parameter in Password : String
+			parameter out LoginResult : Boolean
+		}
+		CV_OperationInterfaceSignature IReceptionistOps {
+			parameter in UserID: String
+			parameter in Password : String
+			parameter out LoginResult : Boolean
+		}
+		CV_OperationInterfaceSignature ITrader {
+			parameter in ServiceKind : String
+			parameter out ServiceID : String
+			parameter out IPAddress : String
+		}
+		CV_OperationInterfaceSignature ITransaction {
+			parameter in transactionKind : String
+			parameter out transactionContextID : Integer
+		}
+		CV_OperationInterfaceSignature IAppointmentRequest {
+			parameter in PatientID : String
+			parameter in AppointmentRequestInfo : String
+			parameter out AppointmentRequestResult : Boolean
+		}
+		CV_OperationInterfaceSignature ILogin {
+			parameter in UserName : String
+			parameter in PassWord : String
+			parameter out UserID : String
+		}
+		CV_OperationInterfaceSignature IUsersManagement {
+			parameter out UserID : String
+			parameter out Password : String
+			parameter in LoginResult : Boolean
+		}
+		CV_OperationInterfaceSignature IUserInfo {   // Tentative
+		}
+		CV_OperationInterfaceSignature IPatientOrder {
+		}
+	// Human Objects
+		CV_Object Receptionist {
+			CV_OperationInterface ICS {
+				using IReceptionistUI
+			}
+		}
+	// Presentation Objects - User Interfaces
+		CV_Object InterfaceToReceptionist {
+			CV_OperationInterface iReceptionist {
+				providing IReceptionistUI
+			}
+			CV_OperationInterface iAppointmentRequest {
+				using ILogin
+				using IReceptionistOps
+			}
+		}
+	// Application Objects
+	// *** Business Functions ***
+		CV_Object PatientOpBusinessObject {
+			CV_OperationInterface iPatientOps {
+				providing IReceptionistOps
+			}
+			CV_OperationInterface iTrader {
+				using ITrader
+			}
+			CV_OperationInterface iTransaction {
+				using ITransaction
+			}
+		}
+	// *** Aux Functions ***
+		CV_Object LoginFunction {
+			CV_OperationInterface iLogin {
+				providing ILogin
+				using IUserInfo
+			}
+		}	
+	// *** ODP Functions ***
+		CV_Object TraderObject {
+			CV_OperationInterface iTrader {
+				providing ITrader
+			}
+		}
+		CV_Object TransactionManagementObject {
+			CV_OperationInterface iTransaction {
+				providing ITransaction
+			}
+		}
+	// Data Management Objects
+		CV_Object ClinicDataManagementObject {
+			CV_OperationInterface iClinicManagement {
+				providing IUsersManagement
+				providing IUserInfo
+			}
+			< 
+			CV_Object ClinicManagement {
+				property Patients : Patient[]
+				property Clinics : Clinic[]
+			} 
+			CV_Object Patient {
+			}
+			CV_Object Clinic {
+			} 
+			>
+		}
+		CV_Object AppointmentReservationDataManagementObject {
+			CV_OperationInterface iPatientOp {
+				providing IPatientOrder
+				providing IUserInfo
+			}
+			<
+			CV_Object ReservationMngmt {
+				property reservationRequests : ReservationRequest[]
+			}
+			CV_Object ReservationRequest {
+			}
+			>
+		}
+	}	
+}
+
+// *** BELOW are preliminary (just started) [grammatically correct though] ***
+
+// engineering specification
+package myEngineering {
+	import DataTypes.*
+	engineering Clinic_NV {
+		node Clinic_System_Node {
+			link toBackEndServer : Backend_Server_Node
+			NV_OperationInterfaceSignature Login {
+				parameter in UId : Identifier
+				parameter in PWD : String
+				parameter out result : Boolean
+			}
+			NV_Object LoginObject {
+				property name : String
+				property UId : Identifier
+				property PWD : String
+				NV_OperationInterface Login {
+					providing Login
+				}
+			}
+		}
+		node Backend_Server_Node {
+			link toClinic : Clinic_System_Node
+			link ClinicBusinessFunctions : ClinicDataManagementNode
+			NV_SignalInterfaceSignature SecurityAlarm {
+				parameter in alrmCode : Identifier
+			}
+			NV_Object AlarmObject {
+				property alarmCode : Identifier
+				NV_SignalInterface Alarm {
+					providing SecurityAlarm
+				}
+			}
+		}
+		node ClinicDataManagementNode {
+		}
+	}
+	
+}
+
+// technology specification
+package myTechnology {
+	
+	import DataTypes.*
+	import myEngineering.*
+	
+	technology Clinic_TV {
+		TV_Object PC01 {
+			implementing Clinic_NV.Clinic_System_Node.LoginObject
+		}
+		TV_Object PCServer03 {
+			implementing Clinic_NV.Backend_Server_Node.AlarmObject
+		}
+		implementable standard JEE
+		implementable standard SQL
+		IXIT "JVM version higher than or equal to 1.6"
+	}
+	
+}
+
+// correspondence specification
+package myCorrespondence {
+
+	// ** Information - Computational **
+	
+	import DataTypes.*
+	import myEnterprise.*
+	import myInformation.*
+	import myComputational.*
+	import myEngineering.*
+	import myTechnology.*
+	
+	correspondence IC_Correspondence_ReservationDate {
+		from: information {
+			endpoint Clinic_IV.AppointmentManagementInvariantSchema.Reservation
+		}
+		to: computational {
+			endpoint Clinic_CV.AppointmentReservationDataManagementObject
+			endpoint myCVDataTypes.AppointmentReservationRequest
+		}
+		description "Reservation in Information Viewpoint corresponds to Appointment Reservation Requests Information managed by Data Management Object in Computational Viewpoint"
+	}
+	
+	correspondence NT_Correspondence_deployment {
+		from: engineering {
+			endpoint Clinic_NV.Clinic_System_Node.LoginObject
+		}
+		to: technololgy {
+			endpoint Clinic_TV.PCServer03
+		}
+		description "LoginObject in Engineering Viewpoint is deployed on PCServer03 in Technology Viewpoint"
+	}
+}
