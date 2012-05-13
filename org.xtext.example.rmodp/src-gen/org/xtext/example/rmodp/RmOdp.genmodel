@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.xtext.example.rmodp/src-gen"
+    editDirectory="/org.xtext.example.rmodp.edit/src" editorDirectory="/org.xtext.example.rmodp.editor/src"
+    modelPluginID="org.xtext.example.rmodp" forceOverwrite="true" modelName="RmOdp"
+    updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="5.0" copyrightFields="false" editPluginID="org.xtext.example.rmodp.edit"
+    editorPluginID="org.xtext.example.rmodp.editor">
+  <genPackages prefix="RmOdp" basePackage="org.xtext.example.rmodp" disposableProviderFactory="true"
+      ecorePackage="RmOdp.ecore#/">
+    <genClasses ecoreClass="RmOdp.ecore#//Model">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Model/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//ModelElement"/>
+    <genClasses ecoreClass="RmOdp.ecore#//Type">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Type/name"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//SimpleType">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//SimpleType/superType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//SimpleType/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Enumeration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Enumeration/valueItems"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Import">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Import/importedNamespace"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//PackageDeclaration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//PackageDeclaration/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//PackageDeclaration/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Spec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Spec/name"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Object">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Object/ObjectType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Object/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Object/superObject"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Object/properties"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Object/stateMachine"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Object/interfaces"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Object/innerObjects"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Object/nvObject"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Property">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Property/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Property/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Property/many"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//StateMachine">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//StateMachine/events"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//StateMachine/commands"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//StateMachine/states"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Event">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Event/name"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Command">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Command/name"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//State">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//State/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//State/actions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//State/stateTransitions"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//StateTransition">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//StateTransition/event"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//StateTransition/state"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Interface">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Interface/interfaceType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Interface/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Interface/signatureReferences"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//SignatureReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//SignatureReference/role"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//SignatureReference/ref"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//SignatureDef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//SignatureDef/signatureType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//SignatureDef/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//SignatureDef/params"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Param">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Param/direction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Param/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Param/type"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//EV_spec">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//EV_spec/foa"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//EV_spec/globalObjects"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//EV_spec/communityContracts"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//CommunityContract">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//CommunityContract/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//CommunityContract/objective"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//CommunityContract/community"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Community">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Community/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Community/localObjects"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Community/roles"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Community/or_relations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Community/processes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Community/interactions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Community/policies"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//FieldOfApplication">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//FieldOfApplication/foa"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Objective">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Objective/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Objective/objective"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Objective/subobj"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Role">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Role/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Role/target"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//OR_Relation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//OR_Relation/object"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//OR_Relation/role"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Process">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Process/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Process/processObjective"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Process/lanes"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Lane">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Lane/role"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Lane/nodes"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Node">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Node/name"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Decision">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Decision/incomings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Decision/outgoings"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Incoming">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Incoming/incoming"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Incoming/inCondition"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Outgoing">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Outgoing/outgoing"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Outgoing/outCondition"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Action">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Action/incomings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Action/outgoings"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Subprocess">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Subprocess/incomings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Subprocess/outgoings"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Start">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Start/outgoing"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//End">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//End/incomings"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Artefact">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Artefact/incoming"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Artefact/outgoing"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Interaction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Interaction/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Interaction/process_def"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Interaction/initiator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Interaction/initiator_statemachine"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Interaction/responder"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Interaction/responder_statemachine"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Interaction/interactionArtefacts"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//InteractionArtefact">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//InteractionArtefact/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//InteractionArtefact/fromRole"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//InteractionArtefact/toRole"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Policy">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Policy/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Policy/policy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Policy/obligations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Policy/permissions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Policy/prohibitions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Policy/process"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Policy/affectedRole"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Policy/affectedProcess"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Policy/affectedInteraction"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//ObjectObligation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ObjectObligation/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ObjectObligation/inforce"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//ObjectObligation/objo"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ObjectObligation/object_obligation"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//RoleObligation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//RoleObligation/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//RoleObligation/inforce"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//RoleObligation/roleo"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//RoleObligation/role_obligation"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//ObjectPermission">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ObjectPermission/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ObjectPermission/inforce"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//ObjectPermission/objp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ObjectPermission/object_permission"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//RolePermission">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//RolePermission/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//RolePermission/inforce"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//RolePermission/rolep"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//RolePermission/role_permission"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//ObjectProhibition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ObjectProhibition/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ObjectProhibition/inforce"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//ObjectProhibition/objp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ObjectProhibition/object_prohibition"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//RoleProhibition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//RoleProhibition/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//RoleProhibition/inforce"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//RoleProhibition/rolep"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//RoleProhibition/role_prohibition"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//IV_spec">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//IV_spec/invariantSchema"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//IV_spec/dynamicSchema"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//IV_spec/staticSchema"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//InvariantSchema">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//InvariantSchema/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//InvariantSchema/objects"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//InvariantSchema/actionTypes"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//DynamicSchema">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//DynamicSchema/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//DynamicSchema/stateMachine"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//StaticSchema">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//StaticSchema/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//StaticSchema/time"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//StaticSchema/objectInstances"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//ObjectInstance">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//ObjectInstance/typeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ObjectInstance/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//ObjectInstance/propertyInstances"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//PropertyInstance">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//PropertyInstance/typeProperty"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//PropertyInstance/propertyValue"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//ActionType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ActionType/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//ActionType/actionTypes"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//ActionProperty">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ActionProperty/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//ActionProperty/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ActionProperty/many"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//CV_spec">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//CV_spec/cdatatypes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//CV_spec/signatureDefs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//CV_spec/objects"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//NV_spec">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//NV_spec/hostNode"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//HostNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//HostNode/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//HostNode/link"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//HostNode/signatureDefs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//HostNode/objects"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Link">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Link/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Link/hostNode"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//TV_spec">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//TV_spec/objects"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//TV_spec/implementableStandards"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//TV_spec/ixits"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//ImplementableStandard">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//ImplementableStandard/name"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//IXIT">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//IXIT/description"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//Corr_spec">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Corr_spec/viewpoint1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Corr_spec/endpoints1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Corr_spec/viewpoint2"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RmOdp.ecore#//Corr_spec/endpoints2"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RmOdp.ecore#//Corr_spec/description"/>
+    </genClasses>
+    <genClasses ecoreClass="RmOdp.ecore#//EndPoint">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference RmOdp.ecore#//EndPoint/type"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

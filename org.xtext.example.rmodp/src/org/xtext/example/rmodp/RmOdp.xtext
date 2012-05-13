@@ -1,0 +1,311 @@
+grammar org.xtext.example.rmodp.RmOdp with org.eclipse.xtext.xbase.Xbase
+
+generate rmOdp "http://www.xtext.org/example/rmodp/RmOdp"
+
+Model:
+	(elements+=ModelElement)* ;
+ModelElement :
+	Type | Object | PackageDeclaration | Import | Spec ;
+
+Type:
+	SimpleType | Enumeration ;
+
+SimpleType:
+	'type' name=QualifiedName ('extends' superType=[SimpleType])? ('{'
+		(properties+=Property)*
+	'}')? ;
+
+Enumeration:
+	'enum' name=QualifiedName '{'
+		(valueItems+=STRING)*
+	'}' ;
+
+Import:
+	'import' importedNamespace=QualifiedNameWithWildCard;
+
+QualifiedNameWithWildCard :
+	QualifiedName  ('.' '*')?;
+
+PackageDeclaration:
+	'package' name=QualifiedName '{'
+		elements+=ModelElement*
+	'}';
+
+Spec:
+	EV_spec | IV_spec | CV_spec | NV_spec | TV_spec | Corr_spec ;
+
+
+Object:
+	ObjectType=('EV_Object'|'IV_Object'|'CV_Object'|'NV_Object'|'TV_Object') name=QualifiedName ('extends' superObject=[Object|QualifiedName])? '{'
+		(properties+=Property)*
+		('{' stateMachine=StateMachine '}')?
+		(interfaces+=Interface)* 
+		('<' (innerObjects+=Object)+ '>')?
+		('implementing' nvObject=[Object|QualifiedName])?
+	'}' ;
+
+Property:
+	'property' name=QualifiedName ':' type=[ModelElement|QualifiedName] (many?='[]')? ;
+
+StateMachine:
+	'events'
+		(events+=Event)+
+	'end'
+	'commands'
+		(commands+=Command)+
+	'end'
+	(states+=State)+ ; 
+
+Event : name=QualifiedName;
+Command : name=QualifiedName;
+State :
+	'state' name=QualifiedName
+		('actions' '{' (actions+=[Command])+ '}')?
+		(stateTransitions+=StateTransition)*
+	'end';
+ 
+StateTransition :
+  event=[Event] '=>' state=[State];
+
+Interface:
+	interfaceType=('CV_StreamInterface'|'CV_OperationInterface'|'CV_SignalInterface'|'NV_StreamInterface'|'NV_OperationInterface'|'NV_SignalInterface') name=QualifiedName ('{'
+		(signatureReferences+=SignatureReference)*
+	'}')? ;
+
+SignatureReference:
+	role=('providing'|'using') ref=[SignatureDef] ;
+
+SignatureDef:
+	signatureType=('CV_SignalInterfaceSignature'|'CV_StreamInterfaceSignature'|'CV_OperationInterfaceSignature'|'CV_FlowSignature'|'NV_SignalInterfaceSignature'|'NV_StreamInterfaceSignature'|'NV_OperationInterfaceSignature'|'NV_FlowSignature') name=QualifiedName '{'
+		(params+=Param)*
+	'}' ;
+
+Param:
+	'parameter' direction=('in'|'out'|'inout') name=QualifiedName ':' type=[Type] ;
+
+////////////////////////////////////////////////////////////////////////////////////////
+EV_spec:  
+	'enterprise' name=QualifiedName '{'
+		foa=FieldOfApplication
+		(globalObjects+=Object)*
+		(communityContracts+=CommunityContract)+
+	'}' ;
+CommunityContract:
+	'EV_CommunityContract' name=QualifiedName '{'
+		objective=Objective
+		community=Community		
+	'}' ;
+Community:
+	'EV_Community' name=QualifiedName '{'
+		(localObjects+=Object)*
+		(roles+=Role)*
+		(or_relations+=OR_Relation)*
+		(processes+=Process)*
+		(interactions+=Interaction)*
+		(policies+=Policy)*
+	'}' ;
+
+FieldOfApplication:
+	'EV_FieldOfApplication' foa=STRING
+;
+
+Objective:
+	'EV_Objective' name=QualifiedName objective=STRING ('{' 
+		(subobj+=Objective)+
+	'}')?
+;
+
+
+// More elements other than 'delegates to' need to be introduced. //
+Role:
+	'EV_Role' name=QualifiedName ('delegates to' target=[Role|QualifiedName])?;
+
+OR_Relation:
+	'EV_Object' object=[Object|QualifiedName] 'fufills' role=[Role|QualifiedName] 'EV_Role';
+
+Process:
+	'EV_Process' name=QualifiedName ('{'
+		('Objective' processObjective=[Objective|QualifiedName])?
+		(lanes+=Lane)*
+	'}')? ;
+Lane:
+	'EV_Role' role=[Role|QualifiedName] '{'
+		(nodes+=Node)*
+		'}' ;
+Node:
+	Decision | Action | Subprocess | Start | End | Artefact;
+Decision:
+	'decision' name=QualifiedName '{'
+		(incomings+=Incoming)*
+		(outgoings+=Outgoing)*
+		'}' ;
+Incoming: {Incoming}
+	'incoming' incoming+=[Node|QualifiedName]* (inCondition=STRING)? ;
+Outgoing: {Outgoing}
+	'outgoing' outgoing+=[Node|QualifiedName]* (outCondition=STRING)? ;
+Action:
+	'EV_Step' name=QualifiedName '{'
+		(incomings+=Incoming)*
+		(outgoings+=Outgoing)*
+		'}' ;
+Subprocess:
+	'subprocess' name=QualifiedName '{'		
+		(incomings+=Incoming)*
+		(outgoings+=Outgoing)*
+		'}' ;
+Start:
+	'start' name=QualifiedName '{'		
+		'outgoing' (outgoing+=[Node|QualifiedName])*
+		'}' ;
+End:
+	'end' name=QualifiedName  '{'		
+		(incomings+=Incoming)*
+		'}' ;
+Artefact:
+	'EV_Artefact' name=QualifiedName '{'
+		('incoming' incoming=[Node|QualifiedName])?
+		('outgoing' outgoing=[Node|QualifiedName])?
+		'}' ;
+
+Interaction:
+	'EV_Interaction' name=QualifiedName ('{'
+		('Process' process_def=[Process|QualifiedName])?
+		'EV_InteractionInitiator' initiator=[Role|QualifiedName] '{'
+			initiator_statemachine=StateMachine
+		'}'
+		'EV_InteractionResponder' responder=[Role|QualifiedName] '{'
+			responder_statemachine=StateMachine
+		'}'
+		(interactionArtefacts+=InteractionArtefact)*
+	'}')?  ;
+InteractionArtefact:
+	'EV_Artefact' name=QualifiedName 'from' fromRole=[Role|QualifiedName] 'to' toRole=[Role|QualifiedName];
+
+// PolicyEnvelop has one current PolicyValue, but does the one PolicyValue mean exactly one policy statement? //
+Policy:
+	'EV_PolicyEnvelop' name=QualifiedName '{'
+		'EV_PolicyValue' policy=STRING '{'
+			(obligations+=ObjectObligation)*
+			(obligations+=RoleObligation)*
+			(permissions+=ObjectPermission)*
+			(permissions+=RolePermission)*
+			(prohibitions+=ObjectProhibition)*
+			(prohibitions+=RoleProhibition)*
+		'}'
+		'EV_ControllingBehavior' '{' 
+			process=[Process|QualifiedName] 
+		'}'
+		'EV_AffectedBehavior {'
+			(affectedRole+=Role)*
+			(affectedProcess+=Process)*
+			(affectedInteraction+=Interaction)* 
+		'}' 
+	'}' ;
+ObjectObligation:
+	'obligation' name=QualifiedName ':' 
+		(inforce?='current')? 'EV_Object' objo=[Object] 
+		'is obligated to' object_obligation=STRING;
+RoleObligation:
+	'obligation' name=QualifiedName ':' 
+		(inforce?='current')? 'EV_Role' roleo=[Role|QualifiedName] 'is obligated to' role_obligation=STRING;
+ObjectPermission:
+	'permission' name=QualifiedName ':' 
+		(inforce?='current')? 'EV_Object' objp=[Object|QualifiedName] 'is permitted to' object_permission=STRING;
+RolePermission:
+	'permission' name=QualifiedName ':' 
+		(inforce?='current')? 'EV_Role' rolep=[Role|QualifiedName] 'is permitted to' role_permission=STRING;
+ObjectProhibition:
+	'prohibition' name=QualifiedName ':' 
+		(inforce?='current')? 'EV_Object' objp=[Object|QualifiedName] 'is prohibited to' object_prohibition=STRING;
+RoleProhibition:
+	'prohibition' name=QualifiedName ':' 
+		(inforce?='current')? 'EV_Role' rolep=[Role|QualifiedName] 'is prohibited to' role_prohibition=STRING;
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+IV_spec:
+	'information' name=QualifiedName '{'
+		(invariantSchema+=InvariantSchema)*
+		(dynamicSchema+=DynamicSchema)*
+		(staticSchema+=StaticSchema)*
+	'}';
+InvariantSchema:
+	'invariant schema' name=QualifiedName '{'
+		(objects+=Object)*
+		(actionTypes+=ActionType)*
+	'}' ;
+DynamicSchema:
+	'dynamic schema' name=QualifiedName '{'
+		stateMachine=StateMachine
+	'}' ;
+StaticSchema:
+	'static schema' name=QualifiedName '{'
+		'locationInTime' ':' time=STRING
+		(objectInstances+=ObjectInstance)*
+	'}' ;
+ObjectInstance:
+	'instance' typeName=[Object|QualifiedName] name=QualifiedName '{'
+		(propertyInstances+=PropertyInstance)*
+	'}' ;
+PropertyInstance:
+	typeProperty=[Property|QualifiedName] ':' propertyValue=STRING ;
+ActionType:
+	'action type' name=QualifiedName '{'
+		(actionTypes+=ActionProperty)*
+	'}' ;
+ActionProperty:
+	'action property' name=QualifiedName ':' type=[ModelElement|QualifiedName] (many?='[]')?;
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+CV_spec:
+	'computational' name=QualifiedName '{'
+		(cdatatypes+=Type)*
+		(signatureDefs+=SignatureDef)*
+		(objects+=Object)*
+	'}';
+
+////////////////////////////////////////////////////////////////////////////////////////
+NV_spec:
+	'engineering' name=QualifiedName '{'
+		(hostNode+=HostNode)*
+	'}';
+HostNode:
+	'node' name=QualifiedName '{'
+		(link+=Link)*
+		(signatureDefs+=SignatureDef)*
+		(objects+=Object)*
+	'}';
+Link:
+	'link' name=QualifiedName ':' hostNode=[HostNode|QualifiedName] ;
+
+////////////////////////////////////////////////////////////////////////////////////////
+TV_spec:
+	'technology' name=QualifiedName '{'
+		(objects+=Object)*
+		(implementableStandards+=ImplementableStandard)*
+		(ixits+=IXIT)*
+	'}';
+ImplementableStandard:
+	'implementable standard' name=QualifiedName ;
+IXIT:
+	'IXIT' description=STRING ;
+
+////////////////////////////////////////////////////////////////////////////////////////
+Corr_spec:
+	'correspondence' name=QualifiedName '{'
+		'from:' viewpoint1=('enterprise'|'information'|'computational'|
+		'engineering'|'technololgy') '{'
+			(endpoints1+=EndPoint)*
+		'}'
+		'to:' viewpoint2=('enterprise'|'information'|'computational'|
+		'engineering'|'technololgy') '{'
+			(endpoints2+=EndPoint)*
+		'}'
+		'description' description=STRING
+	'}'
+;
+EndPoint:
+	'endpoint' type=[ModelElement|QualifiedName]
+;
+

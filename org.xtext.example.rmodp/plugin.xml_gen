@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.xtext.org/example/rmodp/RmOdp" 
+       class = "org.xtext.example.rmodp.rmOdp.RmOdpPackage"
+       genModel = "org/xtext/example/rmodp/RmOdp.genmodel" /> 
+	
+  </extension>
+
+
+
+
+
+</plugin>
